@@ -594,7 +594,7 @@ func (e *Encoder) encodeString(v string, column int) *ast.StringNode {
 	if e.isNeedQuoted(v) {
 		// quoteWith preserves a newline as literal backslash-n characters in single quotes.
 		// Flow-style multiline values therefore need double-quoted escapes to round-trip.
-		if e.singleQuote && !(e.isFlowStyle && strings.ContainsAny(v, "\n\r")) {
+		if e.singleQuote && (!e.isFlowStyle || !strings.ContainsAny(v, "\n\r")) {
 			v = quoteWith(v, '\'')
 		} else {
 			v = strconv.Quote(v)
